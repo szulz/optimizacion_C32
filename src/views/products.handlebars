@@ -1,0 +1,23 @@
+<button onclick="logOut()">Log Out</button> <br> <br> 
+<a href="http://localhost:{{PORT}}/profile">👥PROFILE</a>||<a href="http://localhost:{{PORT}}/carts/{{cartId}}">🛒 GO TO CART</a> ||<a href="http://localhost:{{PORT}}/mail">📧 CONTACT US</a> || <a href="http://localhost:{{PORT}}/sms">💬 SMS</a> || <a href="http://localhost:{{PORT}}/chat">🗣️ CHAT</a><br>
+
+
+<br>
+{{#each products}}
+<div>
+    {{this.title}} <br>
+    {{this.description}} <br>
+    {{this.price}}$ <br>
+    Stock: {{this.stock}} <br>
+    <button onclick="addProduct({{this._id}})">ADD TO CART</button>
+    <br>
+</div>
+{{/each}}
+<br>
+
+Page: {{#if getAll.prevLink}} <a href="{{getAll.prevLink}}">prev</a> {{/if}} {{getAll.page}} {{#if
+getAll.nextLink}}<a href="{{getAll.nextLink}}">next</a>{{/if}}
+
+<br>
+
+<script src="/js/views.js"></script>
