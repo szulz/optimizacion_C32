@@ -9,6 +9,7 @@ const sessionRouter = require('./routes/sessions.router.js');
 const cartsRouter = require('./routes/carts.router.js')
 const authRouter = require('./routes/auth.router.js');
 const smsRouter = require('./routes/sms.router.js');
+const mockingRouter = require('./routes/mocking.router.js');
 const { chatRouter, connectSocket } = require('./routes/chat.router.js');
 const passport = require('passport')
 const startPassport = require('./config/passport.config.js');
@@ -67,6 +68,8 @@ app.use('/profile', profileRouter)
 app.use('/mail', mailRouter)
 app.use('/sms', smsRouter)
 app.use('/chat', chatRouter)
+app.use('/mockingproducts', mockingRouter)
+
 
 const httpServer = app.listen(PORT, () => {
   console.log(`Example app listening on port http://localhost:${PORT}`)
