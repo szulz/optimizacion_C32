@@ -6,9 +6,12 @@ const GitHubStrategy = require('passport-github2')
 const FacebookStrategy = require('passport-facebook')
 const GoogleStrategy = require('passport-google-oauth2');
 const CartManagerMongoose = require('../services/carts.service.js');
-
 const { GITHUB_ID, GOOGLE_ID, FACEBOOK_ID, PORT, ADMIN_EMAIL, ADMIN_STATUS } = require('./env.config.js');
 const userModel = require('../model/schemas/users.model.js');
+const CustomError = require('../services/errors/custom-error.js');
+const EErrors = require('../services/errors/enums.js');
+const GenerateErrorCauses = require('../services/errors/info.js');
+const generateErrorCauses = new GenerateErrorCauses
 const cartManagerMongoose = new CartManagerMongoose
 
 
@@ -174,6 +177,15 @@ async function startPassport() {
             async (req, username, password, done) => {
                 try {
                     const newUser = req.body;
+                    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                    if (!emailRegex.test(username)) {
+                        CustomError.createError({
+                            name: 'Registration email error',
+                            message: 'Error trying to validate the email',
+                            cause: generateErrorCauses.userEmail(username),
+                            code: EErrors.INVALID_EMAIL,
+                        })
+                    }
                     let existingUser = await userModel.findOne({ email: username })
                     if (existingUser) {
                         console.log('user already exist');

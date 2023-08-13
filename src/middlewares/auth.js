@@ -37,6 +37,8 @@ class Auth {
 
     async denieUsersInSession(req, res, next) {
         if (req.session.user) {
+            //hacer handler?
+            
             console.log('There is a current session active');
             return res.redirect('/products')
         }
