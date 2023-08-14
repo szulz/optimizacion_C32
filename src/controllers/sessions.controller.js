@@ -1,7 +1,7 @@
 class SessionsController {
-    user(req, res) {
+    user(req, res, next) {
         req.session.user = req.user
-        return res.redirect('/products')
+        next()
     }
 
     returnUser(req, res) {
