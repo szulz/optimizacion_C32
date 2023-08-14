@@ -19,6 +19,6 @@ authRouter.get('/register', auth.denieUsersInSession, authController.registerGet
 
 authRouter.post('/register', auth.denieUsersInSession, passport.authenticate('register', { failureRedirect: '/auth/fail' }), authController.register)
 
-authRouter.get('/fail', authController.failure)
+authRouter.get('/fail', authController.authFailure)
 
 module.exports = authRouter;

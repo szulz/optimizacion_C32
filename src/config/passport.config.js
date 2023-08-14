@@ -146,12 +146,20 @@ async function startPassport() {
             try {
                 const user = await userModel.findOne({ email: username });
                 if (!user) {
-                    console.log('no user');
-                    return done(null, false)
+                    CustomError.createError({
+                        name: 'Incorrect Email',
+                        message: 'Please check the email or if you dont have an account create it.',
+                        cause: generateErrorCauses.invalidEmail(),
+                        code: EErrors.INVALID_EMAIL_LOGIN,
+                    })
                 }
                 if (!isValidPassword(password, user.password)) {
-                    console.log('pass incorrecto');
-                    return done(null, false)
+                    CustomError.createError({
+                        name: 'Incorrect Password',
+                        message: 'Please try again',
+                        cause: generateErrorCauses.invalidPassword(),
+                        code: EErrors.INVALID_PASSWORD_LOGIN,
+                    })
                 }
                 if (ADMIN_STATUS == 'true') {
                     if (ADMIN_EMAIL == user.email) {
@@ -188,11 +196,13 @@ async function startPassport() {
                     }
                     let existingUser = await userModel.findOne({ email: username })
                     if (existingUser) {
-                        console.log('user already exist');
-                        return done(null, false);
+                        CustomError.createError({
+                            name: 'Email already Registered',
+                            message: 'Please try again with another email',
+                            cause: generateErrorCauses.duplicatedEmail(username),
+                            code: EErrors.DUPLICATED_EMAIL,
+                        })
                     }
-                    //CREAR CARRO CartManagerMongoose
-                    //HACER UNO EN TODOS LOS DEMAS 
                     let cart = await cartManagerMongoose.createCart();
                     let cartId = cart._id.toString()
                     newUser.cart = cartId
